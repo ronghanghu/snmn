@@ -42,7 +42,7 @@ exp_clevr_snmn/clevr_dataset/
   ...
 ```
 
-(Optional) If you want to run any experiments on the CLEVR-Ref dataset for the referential expression grounding task, you can download it from http://ronghanghu.com/snmn, and symbol link it to `exp_clevr_snmn/clevr_loc_dataset`. After this step, the file structure should look like
+(Optional) If you want to run any experiments on the CLEVR-Ref dataset for the referential expression grounding task, you can download it from [here](http://people.eecs.berkeley.edu/~ronghang/projects/snmn/CLEVR_loc.tgz), and symbol link it to `exp_clevr_snmn/clevr_loc_dataset`. After this step, the file structure should look like
 ```
 exp_clevr_snmn/clevr_loc_dataset/
   images/
@@ -99,7 +99,7 @@ cd ../../
 `python exp_clevr_snmn/train_net_joint.py --cfg exp_clevr_snmn/cfgs/joint_scratch.yaml`
 
 Note:
-* By default, the above scripts use GPU 0. To run on a different GPU, append GPU_ID parameter to the commands above (e.g. appending `GPU_ID 2` to use GPU 2). During training, the script will write TensorBoard events to `exp_clevr_snmn/tb/{exp_name}/` and save the snapshots under `exp_clevr_snmn/tfmodel/{exp_name}/`.
+* By default, the above scripts use GPU 0. To run on a different GPU, append `GPU_ID` parameter to the commands above (e.g. appending `GPU_ID 2` to use GPU 2). During training, the script will write TensorBoard events to `exp_clevr_snmn/tb/{exp_name}/` and save the snapshots under `exp_clevr_snmn/tfmodel/{exp_name}/`.
 * When training without ground-truth layout, there is some variance in performance between each run, and training sometimes gets stuck in poor local minima. In our experiments, before evalutating on the test split, we took 4 trials and selected the best one based on validation performance.
 
 ### Test
