@@ -1,0 +1,30 @@
+EXP_NAME: vqa_v1_gt_layout
+MODEL:
+  H_FEAT: 7
+  W_FEAT: 7
+  FEAT_DIM: 2048
+  T_CTRL: 12
+  NMN:
+    STACK:
+      LENGTH: 6
+      USE_HARD_SHARPEN: False  # Default: False
+      GUARD_STACK_PTR: True
+    DESCRIBE_ONE:
+      KEEP_STACK: True
+  INPUT:
+    USE_L2_NORMALIZATION: True
+    L2_NORMALIZATION_TYPE: global
+    USE_POSITION_ENCODING: False
+TRAIN:
+  USE_GT_LAYOUT: True
+  WEIGHT_DECAY: 1e-5
+  BATCH_SIZE: 128
+  SOLVER:
+    LR: 1e-3
+  VQA_USE_SOFT_SCORE: True
+  VQA_SCORE_INIT: -8.  # roughly sigmoid(-8) = 1/3000
+  SNAPSHOT_INTERVAL: 2500
+
+USE_FIXED_WORD_EMBED: True
+FIXED_WORD_EMBED_FILE: './exp_vqa/data/vocabulary_vqa_glove.npy'
+IMDB_FILE: './exp_vqa/data/imdb_r152_7x7/imdb_%s.npy'

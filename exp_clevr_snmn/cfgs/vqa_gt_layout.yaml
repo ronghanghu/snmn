@@ -1,0 +1,16 @@
+EXP_NAME: 'vqa_gt_layout'
+MODEL:
+  CTRL:
+    LINEAR_MODULE_WEIGHTS: True
+    USE_WORD_EMBED: True
+  NMN:
+    STACK:
+      LENGTH: 8
+      GUARD_STACK_PTR: True
+    DESCRIBE_ONE:
+      KEEP_STACK: True
+    DESCRIBE_TWO:
+      KEEP_STACK: True
+TRAIN:
+  USE_GT_LAYOUT: True
+  MAX_ITER: 200000
