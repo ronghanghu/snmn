@@ -2,7 +2,7 @@
 
 This repository contains the code for the following paper:
 
-* R. Hu, J. Andreas, T. Darrell, K. Saenko, Explainable Neural Computation via Stack Neural Module Networks. in ECCV, 2018. ([PDF](https://arxiv.org/pdf/1807.08556.pdf))
+* R. Hu, J. Andreas, T. Darrell, K. Saenko, *Explainable Neural Computation via Stack Neural Module Networks*. in ECCV, 2018. ([PDF](https://arxiv.org/pdf/1807.08556.pdf))
 ```
 @inproceedings{hu2018explainable,
   title={Explainable Neural Computation via Stack Neural Module Networks},
@@ -18,7 +18,7 @@ Project Page: http://ronghanghu.com/snmn
 
 1. Install Python 3 (Anaconda recommended: https://www.continuum.io/downloads).
 2. Install TensorFlow (we used TensorFlow 1.5.0 in our experiments):  
-`pip install tensorflow-gpu`  
+`pip install tensorflow-gpu`  (or `pip install tensorflow-gpu==1.5.0` to install TensorFlow 1.5.0)
 3. Download this repository or clone with Git, and then enter the root directory of the repository:  
 `git clone https://github.com/ronghanghu/snmn.git && cd snmn`
 
