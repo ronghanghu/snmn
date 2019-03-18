@@ -30,10 +30,10 @@ class BatchLoaderClevr:
             print('imdb does not contain answers')
         if not self.load_bbox:
             print('imdb does not contain bounding boxes')
+        self.T_decoder = data_params['T_decoder']
+        self.layout_dict = text_processing.VocabDict(
+            data_params['vocab_layout_file'])
         if self.load_gt_layout:
-            self.T_decoder = data_params['T_decoder']
-            self.layout_dict = text_processing.VocabDict(
-                data_params['vocab_layout_file'])
             # Prune multiple filter modules by default
             self.prune_filter_module = (
                 data_params['prune_filter_module']
