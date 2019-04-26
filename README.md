@@ -174,6 +174,10 @@ cd ../../
 ```
 (Note that this repository already contains the "expert layout" from parsing results using Stanford Parser. They are the same as in [N2NMN](http://ronghanghu.com/n2nmn).)
 
+### Pre-trained models
+
+You may skip the training procedure and directly download the pretrained models [here](https://people.eecs.berkeley.edu/~ronghang/projects/snmn/pretrained_models/exp_vqa/tfmodel/) for evaluation. The downloaded models should be put under `exp_vqa/tfmodel/{exp_name}/`.
+
 ### Training
 
 0. Add the root of this repository to PYTHONPATH: `export PYTHONPATH=.:$PYTHONPATH`  
