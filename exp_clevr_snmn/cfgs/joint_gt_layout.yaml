@@ -1,4 +1,3 @@
-EXP_NAME: 'joint_gt_layout'
 MODEL:
   BUILD_LOC: True
   LOC_SCORES_POS_AFFINE: True

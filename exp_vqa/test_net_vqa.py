@@ -54,7 +54,7 @@ model = Model(
     num_choices=num_choices, module_names=module_names, is_training=False)
 
 # Load snapshot
-if cfg.TEST.USE_EMV:
+if cfg.TEST.USE_EMA:
     ema = tf.train.ExponentialMovingAverage(decay=0.9)  # decay doesn't matter
     var_names = {
         (ema.average_name(v) if v in model.params else v.op.name): v

@@ -1,4 +1,3 @@
-EXP_NAME: vqa_v1_gt_layout
 MODEL:
   H_FEAT: 7
   W_FEAT: 7
@@ -7,7 +6,7 @@ MODEL:
   NMN:
     STACK:
       LENGTH: 6
-      USE_HARD_SHARPEN: False  # Default: False
+      USE_HARD_SHARPEN: False
       GUARD_STACK_PTR: True
     DESCRIBE_ONE:
       KEEP_STACK: True

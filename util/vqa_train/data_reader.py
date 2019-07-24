@@ -126,7 +126,7 @@ class DataReader:
                  **kwargs):
         print('Loading imdb from %s' % imdb_file)
         if imdb_file.endswith('.npy'):
-            imdb = np.load(imdb_file)
+            imdb = np.load(imdb_file, allow_pickle=True)
         else:
             raise TypeError('unknown imdb format.')
         print('Done')
@@ -151,8 +151,8 @@ class DataReader:
     def batches(self):
         while True:
             # Get a batch from the prefetching queue
-            if self.prefetch_queue.empty():
-                print('data reader: waiting for data loading (IO is slow)...')
+            # if self.prefetch_queue.empty():
+            #     print('data reader: waiting for data loading...')
             batch = self.prefetch_queue.get(block=True)
             if batch is None:
                 assert(self.one_pass)

@@ -1,23 +1,14 @@
-import argparse
 import os
 import numpy as np
 import tensorflow as tf
 
 from models_clevr_snmn.model import Model
-from models_clevr_snmn.config import (
-    cfg, merge_cfg_from_file, merge_cfg_from_list)
+from models_clevr_snmn.config import build_cfg_from_argparse
 from util.clevr_train.data_reader import DataReader
 from util.losses import SharpenLossScaler
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--cfg', required=True)
-parser.add_argument('opts', default=None, nargs=argparse.REMAINDER)
-args = parser.parse_args()
-merge_cfg_from_file(args.cfg)
-assert cfg.EXP_NAME == os.path.basename(args.cfg).replace('.yaml', '')
-if args.opts:
-    merge_cfg_from_list(args.opts)
-
+# Load config
+cfg = build_cfg_from_argparse()
 
 # Start session
 os.environ["CUDA_VISIBLE_DEVICES"] = str(cfg.GPU_ID)
@@ -70,9 +61,15 @@ loss_total = loss_train + cfg.TRAIN.WEIGHT_DECAY * model.l2_reg
 
 # Train with Adam
 solver = tf.train.AdamOptimizer(learning_rate=cfg.TRAIN.SOLVER.LR)
-solver_op = solver.minimize(loss_total)
+grads_and_vars = solver.compute_gradients(loss_total)
+if cfg.TRAIN.CLIP_GRADIENTS:
+    print('clipping gradients to max norm: %f' % cfg.TRAIN.GRAD_MAX_NORM)
+    gradients, variables = zip(*grads_and_vars)
+    gradients, _ = tf.clip_by_global_norm(gradients, cfg.TRAIN.GRAD_MAX_NORM)
+    grads_and_vars = zip(gradients, variables)
+solver_op = solver.apply_gradients(grads_and_vars)
 # Save moving average of parameters
-ema = tf.train.ExponentialMovingAverage(decay=cfg.TRAIN.EMV_DECAY)
+ema = tf.train.ExponentialMovingAverage(decay=cfg.TRAIN.EMA_DECAY)
 ema_op = ema.apply(model.params)
 with tf.control_dependencies([solver_op]):
     train_op = tf.group(ema_op)

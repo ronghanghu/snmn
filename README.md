@@ -24,6 +24,8 @@ Project Page: http://ronghanghu.com/snmn
 
 ## Train and evaluate on the CLEVR (and CLEVR-Ref) dataset
 
+**Note (08/04/2019): there was previously an error in the released code -- the gradient clipping was missing in the released version, causing training to be unstable (especially for VQAv1 and VQAv2). This error has been fixed now.**
+
 ### Download and preprocess the data
 
 1. Download the CLEVR dataset from http://cs.stanford.edu/people/jcjohns/clevr/, and symbol link it to `exp_clevr_snmn/clevr_dataset`. After this step, the file structure should look like
@@ -126,6 +128,8 @@ where `{exp_name}` should be one of `loc_gt_layout`, `loc_scratch`, `joint_gt_la
 
 ## Train and evaluate on the VQAv1 and VQAv2 datasets
 
+**Note (08/04/2019): there was previously an error in the released code -- the gradient clipping was missing in the released version, causing training to be unstable (especially for VQAv1 and VQAv2). This error has been fixed now.**
+
 ### Download and preprocess the data
 
 1. Download the VQAv1 and VQAv2 dataset annotations from http://www.visualqa.org/download.html, and symbol link them to `exp_vqa/vqa_dataset`. After this step, the file structure should look like
@@ -157,11 +161,14 @@ exp_vqa/coco_dataset/
       COCO_train2014_000000000009.jpg
       ...
     val2014/
+      COCO_val2014_000000000042.jpg
+      ...
     test2015/
-  ...
+      COCO_test2015_000000000001.jpg
+      ...
 ```
 
-3. Extract visual features from the images and store them on the disk. In our experiments, we extract visual features using ResNet-152 C5 block. Then, build image collections (imdb) for VQAv1 and VQAv2. These procedures can be down as follows.
+3. Extract visual features from the images and store them on the disk. In our experiments, we extract visual features using ResNet-152 C5 block. Then, build image collections (imdb) for VQAv1 and VQAv2. These procedures can be done as follows.
 
 ```
 ./exp_vqa/tfmodel/resnet/download_resnet_v1_152.sh  # Download ResNet-152

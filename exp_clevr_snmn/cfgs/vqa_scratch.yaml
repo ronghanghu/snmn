@@ -1,4 +1,3 @@
-EXP_NAME: 'vqa_scratch'
 MODEL:
   CTRL:
     LINEAR_MODULE_WEIGHTS: True

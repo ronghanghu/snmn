@@ -1,4 +1,3 @@
-EXP_NAME: 'vqa_gt_layout'
 MODEL:
   CTRL:
     LINEAR_MODULE_WEIGHTS: True

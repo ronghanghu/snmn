@@ -39,7 +39,7 @@ def build_imdb(image_set):
         with open(annotation_file % image_set) as f:
             annotations = json.load(f)["annotations"]
             qid2ann_dict = {ann['question_id']: ann for ann in annotations}
-        qid2layout_dict = np.load(gt_layout_file % image_set)[()]
+        qid2layout_dict = np.load(gt_layout_file % image_set, allow_pickle=True)[()]
     else:
         load_answer = False
         load_gt_layout = False

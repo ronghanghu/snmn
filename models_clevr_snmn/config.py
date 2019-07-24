@@ -2,6 +2,8 @@ from ast import literal_eval
 import copy
 import yaml
 import numpy as np
+import os
+import argparse
 from util.attr_dict import AttrDict
 
 __C = AttrDict()
@@ -10,7 +12,7 @@ cfg = __C
 # --------------------------------------------------------------------------- #
 # general options
 # --------------------------------------------------------------------------- #
-__C.EXP_NAME = '__default__'
+__C.EXP_NAME = '<fill-with-filename>'
 __C.GPU_ID = 0
 __C.GPU_MEM_GROWTH = True
 
@@ -88,8 +90,10 @@ __C.TRAIN.WEIGHT_DECAY = 1e-5
 __C.TRAIN.DROPOUT_KEEP_PROB = 0.85
 __C.TRAIN.SOLVER = AttrDict()
 __C.TRAIN.SOLVER.LR = 1e-4
-__C.TRAIN.EMV_DECAY = 0.999
+__C.TRAIN.EMA_DECAY = 0.999
 __C.TRAIN.START_ITER = 0
+__C.TRAIN.CLIP_GRADIENTS = True
+__C.TRAIN.GRAD_MAX_NORM = 8.
 
 __C.TRAIN.VQA_LOSS_WEIGHT = 1.
 __C.TRAIN.BBOX_IND_LOSS_WEIGHT = 1.
@@ -120,7 +124,7 @@ __C.TRAIN.SHARPEN_SCHEDULE_END = 10000
 # --------------------------------------------------------------------------- #
 __C.TEST = AttrDict()
 __C.TEST.BATCH_SIZE = 64
-__C.TEST.USE_EMV = True
+__C.TEST.USE_EMA = True
 __C.TEST.SPLIT_VQA = 'val'
 __C.TEST.SPLIT_LOC = 'loc_val'
 __C.TEST.SNAPSHOT_FILE = './exp_clevr_snmn/tfmodel/%s/%08d'
@@ -141,22 +145,44 @@ __C.TEST.VIS_SHOW_IMG = True
 __C.TEST.BBOX_IOU_THRESH = .5
 
 # --------------------------------------------------------------------------- #
+# post-processing configs after loading
+# --------------------------------------------------------------------------- #
+def _postprocess_cfg():  # NoQA
+    pass
+
 # --------------------------------------------------------------------------- #
 
 
-def merge_cfg_from_file(cfg_filename):
+def build_cfg_from_argparse(args_list=None):
+    """Load config with command line options (`--cfg` and a list of options)"""
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--cfg', default='')
+    parser.add_argument('opts', default=None, nargs=argparse.REMAINDER)
+    args = parser.parse_args(args_list)
+    if args.cfg:
+        _merge_cfg_from_file(args.cfg)
+    if args.opts:
+        _merge_cfg_from_list(args.opts)
+    _postprocess_cfg()
+    return __C
+
+
+def _merge_cfg_from_file(cfg_filename):
     """Load a yaml config file and merge it into the global config."""
     with open(cfg_filename, 'r') as f:
-        yaml_cfg = AttrDict(yaml.load(f))
-    _merge_a_into_b(yaml_cfg, __C)
+        yaml_cfg = yaml.load(f)
+    if yaml_cfg is not None:
+        _merge_a_into_b(AttrDict(yaml_cfg), __C)
+    if __C.EXP_NAME == '<fill-with-filename>':
+        __C.EXP_NAME = os.path.basename(cfg_filename).replace('.yaml', '')
 
 
-def merge_cfg_from_cfg(cfg_other):
+def _merge_cfg_from_cfg(cfg_other):
     """Merge `cfg_other` into the global config."""
     _merge_a_into_b(cfg_other, __C)
 
 
-def merge_cfg_from_list(cfg_list):
+def _merge_cfg_from_list(cfg_list):
     """Merge config keys, values in a list (e.g., from command line) into the
     global config. For example, `cfg_list = ['TEST.NMS', 0.5]`.
     """
