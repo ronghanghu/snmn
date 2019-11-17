@@ -4,19 +4,11 @@ import numpy as np
 import tensorflow as tf
 
 from models_clevr_snmn.model import Model
-from models_clevr_snmn.config import (
-    cfg, merge_cfg_from_file, merge_cfg_from_list)
+from models_clevr_snmn.config import build_cfg_from_argparse
 from util.clevr_train.data_reader import DataReader
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--cfg', required=True)
-parser.add_argument('opts', default=None, nargs=argparse.REMAINDER)
-args = parser.parse_args()
-merge_cfg_from_file(args.cfg)
-assert cfg.EXP_NAME == os.path.basename(args.cfg).replace('.yaml', '')
-if args.opts:
-    merge_cfg_from_list(args.opts)
-
+# Load config
+cfg = build_cfg_from_argparse()
 
 # Start session
 os.environ["CUDA_VISIBLE_DEVICES"] = str(cfg.GPU_ID)
